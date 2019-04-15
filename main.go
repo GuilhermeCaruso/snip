@@ -6,8 +6,6 @@ import (
 	"log"
 	"math"
 	"os"
-
-	"github.com/GuilhermeCaruso/snip/tools"
 )
 
 func main() {
@@ -30,12 +28,11 @@ func main() {
 		for x := 0; x < bounds.Max.X; x++ {
 			actualPixel := img.At(x, y)
 
-			newIMG.Set(int(math.Cos(2)*(float64(x-bounds.Max.X/2))-math.Sin(2)*(float64(y-bounds.Max.Y/2))+float64(bounds.Max.X/2)), int(math.Sin(2)*(float64(x-bounds.Max.X/2))+math.Cos(2)*(float64(y-bounds.Max.Y/2))+float64(bounds.Max.Y/2)), actualPixel)
+			newIMG.Set(int(math.Cos(135.1)*(float64(x-bounds.Max.X/2))-math.Sin(135.1)*(float64(y-bounds.Max.Y/2))+float64(bounds.Max.X/2)),
+				int(math.Sin(135.1)*(float64(x-bounds.Max.X/2))+math.Cos(135.1)*(float64(y-bounds.Max.Y/2))+float64(bounds.Max.Y/2)), actualPixel)
 
 		}
 	}
-
-	teste := tools.Threshold(newIMG, 100)
 
 	// fmt.Println((float64(300) * math.Cos(0.1)) - (float64(300) * math.Sin(0.1)))
 	// fmt.Println((float64(300) * math.Sin(0.1)) + (float64(300) * math.Cos(0.1)))
@@ -46,6 +43,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer outFile.Close()
-	jpeg.Encode(outFile, teste, nil)
+	jpeg.Encode(outFile, newIMG, nil)
 
 }
