@@ -20,8 +20,14 @@ func main() {
 		log.Fatal(os.Stderr, "%s: %v\n", "flower.jpg", err)
 	}
 
-	newIMG := tools.Rotate(img, 0)
-	newIMG = tools.Threshold(newIMG, 100)
+	newIMG := tools.Crop(img, tools.FieldMask{
+		X:      318,
+		Y:      140,
+		Height: 78,
+		Width:  482,
+	})
+	// newIMG := tools.Rotate(img, 0)
+	// newIMG = tools.Threshold(newIMG, 100)
 
 	outFile, err := os.Create("changed.jpg")
 	if err != nil {
