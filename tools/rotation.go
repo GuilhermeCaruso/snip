@@ -7,10 +7,11 @@ import (
 
 // Rotate Method responsible for free image rotation
 func Rotate(img image.Image, angle float64) image.Image {
+	// Final image set on retunr
 	var newIMG *image.RGBA
-
+	// Get img bounds
 	bounds := img.Bounds()
-
+	// Calculate sin and cos using angle parameter
 	sen, cos := math.Sincos(math.Pi * angle / 180)
 
 	if angle == 90 || angle == 270 ||
@@ -46,26 +47,32 @@ func Rotate(img image.Image, angle float64) image.Image {
 func calculate(bounds image.Rectangle, x, y int, sen, cos float64, newIMG *image.RGBA, img image.Image) {
 	actualPixel := img.At(x, y)
 	newIMG.Set(
-		int(cos*(float64(x-bounds.Max.X/2))-
-			sen*(float64(y-bounds.Max.Y/2))+
+		int(cos*(delta(x, bounds.Max.X))-
+			sen*(delta(y, bounds.Max.Y))+
 			float64(bounds.Max.X/2)),
-		int(sen*(float64(x-bounds.Max.X/2))+
-			cos*(float64(y-bounds.Max.Y/2))+
+		int(sen*(delta(x, bounds.Max.X))+
+			cos*(delta(y, bounds.Max.Y))+
 			float64(bounds.Max.Y/2)),
 		actualPixel)
 
 }
 
+// Method responsible for distributing pixels in new fix position
 func calculateFix(bounds image.Rectangle, x, y int, sen, cos float64, newIMG *image.RGBA, img image.Image) {
 	actualPixel := img.At(x, y)
 	newIMG.Set(
-		int(cos*(float64(x-bounds.Max.X/2))-
-			sen*(float64(y-bounds.Max.Y/2))+
+		int(cos*(delta(x, bounds.Max.X))-
+			sen*(delta(y, bounds.Max.Y))+
 			float64(bounds.Max.X/2)-
 			float64(bounds.Max.X/2-bounds.Max.Y/2)),
-		int(sen*(float64(x-bounds.Max.X/2))+
-			cos*(float64(y-bounds.Max.Y/2))+
+		int(sen*(delta(x, bounds.Max.X))+
+			cos*(delta(y, bounds.Max.Y))+
 			float64(bounds.Max.Y/2)+
 			float64(bounds.Max.X/2-bounds.Max.Y/2)),
 		actualPixel)
+}
+
+// Calculate delta value
+func delta(x, y int) float64 {
+	return float64(x - y/2)
 }

@@ -2,6 +2,10 @@ package tools
 
 import "image"
 
+/*
+FieldMask is the struct to define a mask used on
+crop method
+*/
 type FieldMask struct {
 	X      int
 	Y      int
@@ -9,6 +13,9 @@ type FieldMask struct {
 	Height int
 }
 
+/*
+Crop is responsible for cutting the selected region of an image.
+*/
 func Crop(img image.Image, mask FieldMask) image.Image {
 
 	fieldIMG := image.NewRGBA(image.Rectangle{
