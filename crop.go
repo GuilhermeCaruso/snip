@@ -1,22 +1,27 @@
-package tools
+package snip
 
-import "image"
+import (
+	"image"
+)
 
 /*
 FieldMask is the struct to define a mask used on
 crop method
 */
 type FieldMask struct {
-	X      int
-	Y      int
-	Width  int
-	Height int
+	X      int `json:"x"`
+	Y      int `json:"y"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
 }
 
 /*
 Crop is responsible for cutting the selected region of an image.
 */
-func Crop(img image.Image, mask FieldMask) image.Image {
+func Crop(img image.Image, field Field, c *chan ExtractedIMG) {
+	defer wg.Done()
+
+	mask := field.Mask
 
 	fieldIMG := image.NewRGBA(image.Rectangle{
 		Min: image.Point{
@@ -34,6 +39,9 @@ func Crop(img image.Image, mask FieldMask) image.Image {
 			fieldIMG.Set(x, y, img.At(x, y))
 		}
 	}
+	*c <- ExtractedIMG{
+		Image: fieldIMG,
+		Field: field,
+	}
 
-	return fieldIMG
 }
